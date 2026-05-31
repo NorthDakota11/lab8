@@ -1,19 +1,12 @@
 # lab08
 
-Laboratory work VIII: Docker.
+Лабораторная работа №8.
 
-This laboratory work is dedicated to deployment automation and application management using Docker.
+Тема работы: использование Docker для сборки и запуска C++ приложения.
 
-## Task
+В репозитории находится приложение `demo`, CMake-файл, Dockerfile, конфигурация Travis CI и отчет `REPORT.md`.
 
-The project contains a small C++ logger application. The application reads text from standard input and writes it to a log file. The path to the log file is passed through the `LOG_PATH` environment variable inside the Docker container.
+Приложение читает строки из стандартного ввода и сохраняет их в лог-файл.
 
-## Project structure
-
-```text
-.
-├── CMakeLists.txt
-├── Dockerfile
-├── .travis.yml
-└── sources
-    └── demo.cpp
+Ссылка на репозиторий:
+https://github.com/NorthDakota11/lab8
