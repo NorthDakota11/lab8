@@ -1,0 +1,59 @@
+import os
+
+import mysql.connector
+from flask import Flask, redirect, render_template_string, request
+
+app = Flask(__name__)
+
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST", "db"),
+    "user": os.getenv("DB_USER", "lab_user"),
+    "password": os.getenv("DB_PASSWORD", "lab_password"),
+    "database": os.getenv("DB_NAME", "lab_db"),
+}
+
+PAGE = """
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Lab Docker</title></head>
+<body>
+  <h1>Список задач</h1>
+  <form method="post">
+    <input name="name" placeholder="Название задачи" required>
+    <button type="submit">Добавить</button>
+  </form>
+  <ul>
+  {% for task in tasks %}
+    <li>{{ task }}</li>
+  {% endfor %}
+  </ul>
+</body>
+</html>
+"""
+
+
+def connection():
+    return mysql.connector.connect(**DB_CONFIG)
+
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    db = connection()
+    cursor = db.cursor()
+
+    if request.method == "POST":
+        cursor.execute("INSERT INTO tasks(name) VALUES (%s)", (request.form["name"],))
+        db.commit()
+        cursor.close()
+        db.close()
+        return redirect("/")
+
+    cursor.execute("SELECT name FROM tasks ORDER BY id DESC")
+    tasks = [row[0] for row in cursor.fetchall()]
+    cursor.close()
+    db.close()
+    return render_template_string(PAGE, tasks=tasks)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
