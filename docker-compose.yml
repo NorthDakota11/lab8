@@ -6,11 +6,13 @@ services:
     container_name: lab_docker_app
     ports:
       - "5000:5000"
+    env_file:
+      - .env
     environment:
       DB_HOST: db
-      DB_USER: lab_user
-      DB_PASSWORD: lab_password
-      DB_NAME: lab_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     depends_on:
       db:
         condition: service_healthy
@@ -19,11 +21,13 @@ services:
     image: mysql:8.0
     container_name: lab_docker_mysql
     restart: always
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: lab_db
-      MYSQL_USER: lab_user
-      MYSQL_PASSWORD: lab_password
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
