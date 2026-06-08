@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "db"),
-    "user": os.getenv("DB_USER", "lab_user"),
-    "password": os.getenv("DB_PASSWORD", "lab_password"),
-    "database": os.getenv("DB_NAME", "lab_db"),
+    "user": os.environ["DB_USER"],
+    "password": os.environ["DB_PASSWORD"],
+    "database": os.environ["DB_NAME"],
 }
 
 PAGE = """
